@@ -24,7 +24,33 @@ const pageHeader = document.querySelector('.page-header');
 
 
 // showPage function
-const showPage = (list, page) => {};
+const showPage = (list, page) => {
+   
+   // hide the original list
+   for (let i = 0; i < list.length; i++) {
+      list[i].style.display = "none";
+   }
+
+   const itemsPerPage = 10;
+
+   // determine the position of each list item
+   // that will be displayed on a given page
+   let firstIndex = itemsPerPage * (page - 1);
+   let lastIndex = itemsPerPage + firstIndex;
+
+   // each list item will be made visible if they
+   // are within the first and last index position
+   if (list.length < lastIndex) {
+      lastIndex = list.length;
+      for (let i = firstIndex; i < lastIndex; i++) {
+         list[i].style.display = "";
+      }
+   } else {
+      for (let i = firstIndex; i < lastIndex; i++) {
+         list[i].style.display = "";
+      }
+   }
+};
 
 
 // appendPageLinks function
