@@ -72,8 +72,8 @@ const appendPageLinks = list => {
    pagination.appendChild(ul);
 
    // create new list items containing links that act as
-   // buttons and displays the number of every page available
-   for (let i = 0; i < totalPages; i++) {
+   // buttons to display the number of every page available
+   for (let i = 0; i <= totalPages; i++) {
       let listItem = document.createElement('li');
       ul.appendChild(listItem);
 
@@ -82,6 +82,26 @@ const appendPageLinks = list => {
       link.href = "#";
       link.innerHTML = i;
    }
+
+   // set the first page link as active by default
+   let activeLink = ul.getElementsByTagName('a')[0];
+   activeLink.className = "active";
+
+   // add functionality to the links so 
+   ul.addEventListener('click', (event) => {
+      if (event.target.tagName === 'A') {
+         let links = ul.getElementsByTagName('a');
+         
+         for (let i = 0; i < links.length; i++){
+            links[i].className = "";
+
+            if (event.target.innerHTML === links[i].innerHTML) {
+               links[i].className = "active";
+            }
+         }
+         showPage(list, event.target.innerHTML);
+      }
+   });
 };
 
 
