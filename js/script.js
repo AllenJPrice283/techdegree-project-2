@@ -73,7 +73,7 @@ const appendPageLinks = list => {
 
    // create new list items containing links that act as
    // buttons to display the number of every page available
-   for (let i = 0; i <= totalPages; i++) {
+   for (let i = 1; i <= totalPages; i++) {
       let listItem = document.createElement('li');
       ul.appendChild(listItem);
 
@@ -106,7 +106,24 @@ const appendPageLinks = list => {
 
 
 // appendStudentSearch function
-const appendStudentSearch = list => {};
+const appendStudentSearch = list => {
+
+   // create the student search div
+   const studentSearch = document.createElement('div');
+   pageHeader.appendChild(studentSearch);
+   studentSearch.className = "student-search";
+
+   // create the search input field
+   let searchInput = document.createElement('input');
+   studentSearch.appendChild(searchInput);
+   searchInput.placeholder = "Search for students...";
+
+   // create the search button
+   let searchButton = document.createElement('button');
+   studentSearch.appendChild(searchButton);
+   searchButton.innerHTML = "Search";
+};
 
 
 appendPageLinks(studentItems);
+appendStudentSearch(studentItems);
