@@ -5,12 +5,14 @@ FSJS project 2 - List Filter and Pagination
    
 // Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
 
-/**
- * This "List Filter and Pagination" application takes a list of students, tallies up the total and
- * displays a maximum of ten students per page.
- * A new page is created every time the limit of tenstudents is reached.
- * Students can also be filtered by search.
- **/
+/***
+This "List Filter and Pagination" application takes a list of students,
+tallies up the total and displays a maximum of ten students per page.
+ 
+A new page is created every time the limit of tenstudents is reached.
+
+Students can also be filtered by search.
+***/
 
 
 // The parent node to append the pagination links to
@@ -87,7 +89,7 @@ const appendPageLinks = list => {
    let activeLink = ul.getElementsByTagName('a')[0];
    activeLink.className = "active";
 
-   // add functionality to the links so 
+   // add functionality to the links
    ul.addEventListener('click', (event) => {
       if (event.target.tagName === 'A') {
          let links = ul.getElementsByTagName('a');
@@ -122,6 +124,23 @@ const appendStudentSearch = list => {
    let searchButton = document.createElement('button');
    studentSearch.appendChild(searchButton);
    searchButton.innerHTML = "Search";
+
+   // add functionality to the search button
+   studentSearch.addEventListener('click', (event) => {
+      if (event.target.tagName === 'BUTTON') {
+         
+         for (let i = 0; i < list.length; i++) {
+            let studentName = list[i].getElementsByTagName('h3')[0].innerHTML;
+
+            if (studentName.toUpperCase().indexOf(searchInput.value.toUpperCase()) !== -1) {
+               list[i].style.display = "";
+            } else {
+               list[i].style.display = "none";
+            }
+
+         }
+      }
+   });
 };
 
 
