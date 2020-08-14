@@ -54,8 +54,39 @@ const showPage = (list, page) => {
 
 
 // appendPageLinks function
-const appendPageLinks = list => {};
+const appendPageLinks = list => {
+
+   // display the first page by default
+   showPage(list, 1);
+
+   // determine the total number of pages
+   const totalPages = Math.ceil(list.length / 10);
+
+   // create the pagination div as a child of the main page div
+   let pagination = document.createElement('div');
+   mainPage.appendChild(pagination);
+   pagination.className = "pagination";
+
+   // create the unordered list as a child of the pagination div
+   let ul = document.createElement('ul');
+   pagination.appendChild(ul);
+
+   // create new list items containing links that act as
+   // buttons and displays the number of every page available
+   for (let i = 0; i < totalPages; i++) {
+      let listItem = document.createElement('li');
+      ul.appendChild(listItem);
+
+      let link = document.createElement('a');
+      listItem.appendChild(link);
+      link.href = "#";
+      link.innerHTML = i;
+   }
+};
 
 
 // appendStudentSearch function
 const appendStudentSearch = list => {};
+
+
+appendPageLinks(studentItems);
