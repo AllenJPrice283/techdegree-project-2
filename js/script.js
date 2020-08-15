@@ -165,6 +165,10 @@ const appendStudentSearch = list => {
             paginationDiv.style.display = "";
             appendPageLinks(searchResults);
          }
+
+         // remove original pagination buttons
+         let originalLinks = paginationDiv.firstElementChild;
+         paginationDiv.removeChild(originalLinks);
       }
    });
 };
