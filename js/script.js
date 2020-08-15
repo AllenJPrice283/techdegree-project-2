@@ -91,6 +91,8 @@ const appendPageLinks = list => {
 
    // add functionality to the links
    ul.addEventListener('click', (event) => {
+
+      // trigger the event only if a link is targeted
       if (event.target.tagName === 'A') {
          let links = ul.getElementsByTagName('a');
          
@@ -127,17 +129,41 @@ const appendStudentSearch = list => {
 
    // add functionality to the search button
    studentSearch.addEventListener('click', (event) => {
+      let filteredList = list[0].parentNode;
+
+      // trigger the event only if the button is targeted
       if (event.target.tagName === 'BUTTON') {
-         
+
+         // cycle through the student names found in the h3 tags
          for (let i = 0; i < list.length; i++) {
             let studentName = list[i].getElementsByTagName('h3')[0].innerHTML;
 
+            // display the names which contain any letter that matches the input
             if (studentName.toUpperCase().indexOf(searchInput.value.toUpperCase()) !== -1) {
                list[i].style.display = "";
             } else {
                list[i].style.display = "none";
             }
 
+         }
+
+         // apply pagination to the search results
+         let searchResults = filteredList.querySelectorAll('li[style=""]');
+         let paginationDiv = mainPage.lastElementChild;
+
+         // create a message if no results were found
+         let noResults = document.createElement('h3');
+         noResults.innerHTML = "No results have been found.";
+         mainPage.appendChild(noResults);
+         noResults.style.display = "none";
+
+         if (searchResults.length < 1) {
+            paginationDiv.style.display = "none";
+            noResults.style.display = "";
+         } else {
+            noResults.style.display = "none";
+            paginationDiv.style.display = "";
+            appendPageLinks(searchResults);
          }
       }
    });
