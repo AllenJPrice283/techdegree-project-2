@@ -127,9 +127,17 @@ const appendStudentSearch = list => {
    studentSearch.appendChild(searchButton);
    searchButton.innerHTML = "Search";
 
+   // create a message if no results were found
+   let noResults = document.createElement('h3');
+   noResults.innerHTML = "No results have been found.";
+   mainPage.appendChild(noResults);
+   noResults.style.display = "none";
+
    // add functionality to the search button
    studentSearch.addEventListener('click', (event) => {
       let filteredList = list[0].parentNode;
+
+      
 
       // trigger the event only if the button is targeted
       if (event.target.tagName === 'BUTTON') {
@@ -141,6 +149,7 @@ const appendStudentSearch = list => {
             // display the names which contain any letter that matches the input
             if (studentName.toUpperCase().indexOf(searchInput.value.toUpperCase()) !== -1) {
                list[i].style.display = "";
+               noResults.style.display = "none";
             } else {
                list[i].style.display = "none";
             }
@@ -151,11 +160,7 @@ const appendStudentSearch = list => {
          let searchResults = filteredList.querySelectorAll('li[style=""]');
          let paginationDiv = mainPage.lastElementChild;
 
-         // create a message if no results were found
-         let noResults = document.createElement('h3');
-         noResults.innerHTML = "No results have been found.";
-         mainPage.appendChild(noResults);
-         noResults.style.display = "none";
+         
 
          if (searchResults.length < 1) {
             paginationDiv.style.display = "none";
