@@ -41,14 +41,16 @@ pagination.className = "pagination";
 const studentSearch = createNewElement('div', pageHeader);
 studentSearch.className = "student-search";
 
+const hideList = list => {
+   for (let i = 0; i < list.length; i++) {
+      list[i].style.display = "none";
+   }
+};
 
 // showPage function
 const showPage = (list, page) => {
    
-   // hide the original list
-   for (let i = 0; i < list.length; i++) {
-      list[i].style.display = "none";
-   }
+   hideList(list);
 
    const itemsPerPage = 10;
 
@@ -142,21 +144,31 @@ const appendStudentSearch = list => {
       // trigger the event only if the button is targeted
       if (event.target.tagName === 'BUTTON') {
 
-         // cycle through the student names found in the h3 tags
-         for (let i = 0; i < list.length; i++) {
-            let studentName = list[i].getElementsByTagName('h3')[0].innerHTML;
+         if (inputValue === "") {
+            hideList(list);
+            pagination.style.display = "none";
+            noResults.style.display = "";
+         } else {
+            noResults.style.display = "none";
+            pagination.style.display = "";
+         
+            // cycle through the student names found in the h3 tags
+            for (let i = 0; i < list.length; i++) {
+               let studentName = list[i].getElementsByTagName('h3')[0].innerHTML;
 
-            // display the names which contain any character that matches the input
-            if (studentName.toUpperCase().indexOf(inputValue) !== -1) {
-               list[i].style.display = "";
-            } else {
-               list[i].style.display = "none";
+               // display the names which contain any character that matches the input
+               if (studentName.toUpperCase().indexOf(inputValue) !== -1) {
+                  list[i].style.display = "";
+               } else {
+                  list[i].style.display = "none";
+               }
             }
          }
 
          // apply pagination to the search results
          let searchResults = filteredList.querySelectorAll('li[style=""]');
          
+         // set conditions for the search results
          if (searchResults.length < 1) {
             pagination.style.display = "none";
             noResults.style.display = "";
