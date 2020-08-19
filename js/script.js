@@ -133,11 +133,12 @@ const appendStudentSearch = list => {
    mainPage.appendChild(noResults);
    noResults.style.display = "none";
 
+
    // add functionality to the search button
    studentSearch.addEventListener('click', (event) => {
       let filteredList = list[0].parentNode;
-
-      
+      let paginationDiv = mainPage.querySelector('.pagination');
+      let inputValue = searchInput.value.toUpperCase();
 
       // trigger the event only if the button is targeted
       if (event.target.tagName === 'BUTTON') {
@@ -147,21 +148,16 @@ const appendStudentSearch = list => {
             let studentName = list[i].getElementsByTagName('h3')[0].innerHTML;
 
             // display the names which contain any letter that matches the input
-            if (studentName.toUpperCase().indexOf(searchInput.value.toUpperCase()) !== -1) {
+            if (studentName.toUpperCase().indexOf(inputValue) !== -1) {
                list[i].style.display = "";
-               noResults.style.display = "none";
             } else {
                list[i].style.display = "none";
             }
-
          }
 
          // apply pagination to the search results
          let searchResults = filteredList.querySelectorAll('li[style=""]');
-         let paginationDiv = mainPage.lastElementChild;
-
          
-
          if (searchResults.length < 1) {
             paginationDiv.style.display = "none";
             noResults.style.display = "";
@@ -172,8 +168,8 @@ const appendStudentSearch = list => {
          }
 
          // remove original pagination buttons
-         let originalLinks = paginationDiv.firstElementChild;
-         paginationDiv.removeChild(originalLinks);
+         let originalPaginationLinks = paginationDiv.firstElementChild;
+         paginationDiv.removeChild(originalPaginationLinks);
       }
    });
 };
