@@ -33,20 +33,38 @@ const parentPage = document.querySelector('.page');
 const pageHeader = document.querySelector('.page-header');
 
 /**
- * Original List
+ * Original Student List
  * @type {HTMLUListElement}
  */
 const originalList = document.querySelector('.student-list');
 
 /**
- * Original List Items
+ * Original Student List Items
  * @type {NodeListOf<HTMLLIElement>}
  */
 const originalListItems = document.querySelectorAll('.student-item');
 
 /**
- * Max List Items
+ * Number of List Items displayed on a single page
  * @type {number}
  */
 const maxListItems = 10;
 
+/**
+ * Creates a new HTML element with an assigned class name
+ * @param {string} elementType type of element to create
+ * @param {string} elementClass class name to assign to created element
+ * @returns {HTMLElement} HTML element with assigned class name
+ */
+const createNewElement = (elementType, elementClass) => {
+   let newElement = document.createElement(elementType);
+   newElement.className = elementClass;
+   return newElement;
+};
+
+/**
+ * Dynamically added 'Pagination' Div element
+ * @type {HTMLDivElement}
+ */
+const pagination = createNewElement('div', 'pagination');
+parentPage.appendChild(pagination);
