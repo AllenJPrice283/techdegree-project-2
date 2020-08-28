@@ -63,8 +63,49 @@ const createNewElement = (elementType, elementClass) => {
 };
 
 /**
- * Dynamically added 'Pagination' Div element
+ * Dynamically-created 'Pagination' Div element
  * @type {HTMLDivElement}
  */
 const pagination = createNewElement('div', 'pagination');
 parentPage.appendChild(pagination);
+
+/**
+ * Returns a HTML UL element assigned to a specific page number
+ * @param {NodeListOf<HTMLLIElement} list HTML LI elements of students to display
+ * @param {number} page Number of the page that will be displayed
+ * @returns {HTMLUListElement} A list of ten students and the page they will be displayed on
+ */
+const getPageList = (list, page) => {
+   let studentListItem;
+   let firstIndex = maxListItems * (page - 1);
+   let lastIndex = maxListItems + firstIndex;
+
+   let pageList = createNewElement('ul', 'student-list');
+
+   if (list.length <lastIndex) {
+      lastIndex = list.length;
+      for (let i = firstIndex; i < lastIndex; i++) {
+         studentListItem = list[i].cloneNode(true);
+         pageList.appendChild(studentListItem);
+      }
+   } else {
+      for (let i = firstIndex; i < lastIndex; i++) {
+         studentListItem = list[i].cloneNode(true);
+         pageList.appendChild(studentListItem);
+      }
+   }
+   return pageList;
+};
+
+console.log(getPageList(originalListItems, 1));
+
+/**
+ * Display the trimmed list of at least ten students per page
+ * @param {NodeListOf<HTMLLIElement} list HTML LI elements of students to display
+ * @param {number} page Number of the page that will be displayed
+ */
+const showPage = (list, page) => {
+   let newPageList = getPageList(list, page);
+   let oldPageList = parentPage.querySelector('.student-list');
+   parentPage.replaceChild(newPageList, oldPageList);
+};
