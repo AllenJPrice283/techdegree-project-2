@@ -63,7 +63,7 @@ const createNewElement = (elementType, elementClass) => {
 };
 
 /**
- * Dynamically-created 'Pagination' Div element
+ * Dynamically-created 'Pagination' Div
  * @type {HTMLDivElement}
  */
 const pagination = createNewElement('div', 'pagination');
@@ -107,9 +107,6 @@ const showPage = (list, page) => {
    let oldPageList = parentPage.querySelector('.student-list');
    parentPage.replaceChild(newPageList, oldPageList);
 };
-
-// for testing - delete after next save
-showPage(originalListItems, 1);
 
 /**
  * Dynamically-created UL element containing links acting as page numbers
@@ -156,4 +153,78 @@ const getPageLinks = list => {
 const appendPageLinks = list => {
    showPage(list, 1);
    pagination.appendChild(getPageLinks(list));
+};
+
+// for testing - delete after next save
+appendPageLinks(originalListItems);
+
+
+
+// The Student Search Section
+
+/**
+ * Dynamically-created 'Student Search' Div
+ * @type {HTMLDivElement}
+ */
+const studentSearch = createNewElement('div', 'student-search');
+pageHeader.appendChild(studentSearch);
+
+/**
+ * Dynamically-created search input field
+ * @type {HTMLInputElement}
+ */
+const searchInput = document.createElement('input');
+searchInput.placeholder = "Search for students...";
+studentSearch.appendChild(searchInput);
+
+/**
+ * Dynamically-created search button
+ * @type {HTMLButtonElement}
+ */
+const searchButton = document.createElement('button');
+searchButton.innerHTML = "Search";
+studentSearch.appendChild(searchButton);
+
+/**
+ * Dynamically-created H3 element to show no results
+ * @type {HTMLHeadingElement}
+ */
+let showNoResults = document.createElement('h3');
+showNoResults.innerHTML = "No results have been found.";
+showNoResults.style.display = "none";
+parentPage.appendChild(showNoResults);
+
+/**
+ * Create a new list from the search results
+ * @param {NodeListOf<HTMLHeadingElement} list Heading elements containing the Text Content of student names
+ * @param {HTMLInputElement} input Access the input value to match the names of students within the Heading elements
+ * @returns {HTMLUListElement} The list of students that match the criteria of the search
+ */
+const createFilteredList = (list, input) => {
+   let filteredList = document.createElement('ul');
+   filteredList.className = "student-list";
+
+   let nameInput = input.value.toLowerCase();
+
+   for (let i = 0; i < list.length; i++) {
+      let studentName = list[i].innerHTML;
+      let spaceBar = studentName.indexOf(" ");
+      let firstName = studentName.slice(0, spaceBar);
+      let lastName = studentName.slice(spaceBar + 1, studentName.length);
+
+      let studentListItem = list[i].parentNode.parentNode;
+
+      if (firstName.slice(0, nameInput.length) === nameInput) {
+         let firstNameMatch = studentListItem.cloneNode(true);
+         filteredList.appendChild(firstNameMatch);
+      } else if (lastName.slice(0, nameInput.length) === nameInput) {
+         let lastNameMatch = studentListItem.cloneNode(true);
+         filteredList.appendChild(lastNameMatch);
+      } else if (nameInput === studentName) {
+         let fullNameMatch = studentListItem.cloneNode(true);
+         filteredList.appendChild(fullNameMatch);
+      }
+   }
+   
+   return filteredList;
 };
