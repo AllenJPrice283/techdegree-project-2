@@ -77,6 +77,9 @@ parentPage.appendChild(pagination);
  */
 const getPageList = (list, page) => {
    let studentListItem;
+
+   // determine the first and last index positions of
+   // list items to display on a particular page
    let firstIndex = maxListItems * (page - 1);
    let lastIndex = maxListItems + firstIndex;
 
@@ -85,6 +88,8 @@ const getPageList = (list, page) => {
    if (list.length <lastIndex) {
       lastIndex = list.length;
       for (let i = firstIndex; i < lastIndex; i++) {
+         // cloning the nodes to prevent them being removed from
+         // the original parent when being appended to a new parent
          studentListItem = list[i].cloneNode(true);
          pageList.appendChild(studentListItem);
       }
@@ -118,6 +123,7 @@ const getPageLinks = list => {
 
    let pagesList = document.createElement('ul');
 
+   // creating the links that act as page numbers
    for (let i = 1; i <= numberOfPages; i++) {
       let pagesListItem = document.createElement('li');
       let pageLink = document.createElement('a');
@@ -128,15 +134,20 @@ const getPageLinks = list => {
       pagesList.appendChild(pagesListItem);
    }
 
+   // set the first page link as active by default
    let activeDefault = pagesList.getElementsByTagName('a')[0];
    activeDefault.className = "active";
 
+   // add functionality to the page numbers
    pagesList.addEventListener('click', event =>{
+      // remove any currently "active" links
       let pageLinks = pagesList.getElementsByTagName('a');
       for (let i = 0; i < pageLinks.length; i++) {
          pageLinks[i].className = "";
       }
 
+      // trigger the event only if the 'a' tag is
+      // clicked to prevent potential event bubbling
       if (event.target.tagName === 'A') {
          let activeLink = event.target;
          activeLink.className = "active";
@@ -202,16 +213,24 @@ const createFilteredList = (list, input) => {
    let filteredList = document.createElement('ul');
    filteredList.className = "student-list";
 
+   // set the user input value to lower case to match
+   // that of the text content within the heading elements
    let nameInput = input.value.toLowerCase();
 
+   // identifying first names and last names to
+   // compare and match them with the search queries
    for (let i = 0; i < list.length; i++) {
       let studentName = list[i].innerHTML;
       let spaceBar = studentName.indexOf(" ");
       let firstName = studentName.slice(0, spaceBar);
       let lastName = studentName.slice(spaceBar + 1, studentName.length);
 
+      // identifying the LI node as this is what will
+      // be appended to the parent UL node being returned
       let studentListItem = list[i].parentNode.parentNode;
 
+      // setting conditions for the matching the first names,
+      // last names and full names, respectively
       if (firstName.slice(0, nameInput.length) === nameInput) {
          let firstNameMatch = studentListItem.cloneNode(true);
          filteredList.appendChild(firstNameMatch);
@@ -234,15 +253,18 @@ const createFilteredList = (list, input) => {
  */
 const studentNames = originalList.querySelectorAll('h3');
 
-
+// add functionality to the search button
 studentSearch.addEventListener('click', event => {
+   // trigger the event only if the 'button' tag
+   // is clicked to prevent potential event bubbling
    if (event.target.tagName === "BUTTON") {
       let filteredList = createFilteredList(studentNames, searchInput)
 
-      // access the li to make it a list
+      // access the children to return a list
       let filteredItems = filteredList.children;
-      console.log(filteredList);
 
+      // set tconditions for how the search results will
+      // be displayed, if there are any to display
       if (filteredItems.length < 1) {
          console.log("show no results");
          parentPage.children[1].style.display = "none";
