@@ -215,31 +215,18 @@ const createFilteredList = (list, input) => {
 
    // set the user input value to lower case to match
    // that of the text content within the heading elements
-   let nameInput = input.value.toLowerCase();
+   let searchInput = input.value.toLowerCase();
 
-   // identifying first names and last names to
-   // compare and match them with the search queries
    for (let i = 0; i < list.length; i++) {
       let studentName = list[i].innerHTML;
-      let spaceBar = studentName.indexOf(" ");
-      let firstName = studentName.slice(0, spaceBar);
-      let lastName = studentName.slice(spaceBar + 1, studentName.length);
 
       // identifying the LI node as this is what will
       // be appended to the parent UL node being returned
       let studentListItem = list[i].parentNode.parentNode;
 
-      // setting conditions for the matching the first names,
-      // last names and full names, respectively
-      if (firstName.slice(0, nameInput.length) === nameInput) {
-         let firstNameMatch = studentListItem.cloneNode(true);
-         filteredList.appendChild(firstNameMatch);
-      } else if (lastName.slice(0, nameInput.length) === nameInput) {
-         let lastNameMatch = studentListItem.cloneNode(true);
-         filteredList.appendChild(lastNameMatch);
-      } else if (nameInput === studentName) {
-         let fullNameMatch = studentListItem.cloneNode(true);
-         filteredList.appendChild(fullNameMatch);
+      if (studentName.includes(searchInput)) {
+         let nameMatch = studentListItem.cloneNode(true);
+         filteredList.appendChild(nameMatch);
       }
    }
    
@@ -253,11 +240,12 @@ const createFilteredList = (list, input) => {
  */
 const studentNames = originalList.querySelectorAll('h3');
 
-// add functionality to the search button
-studentSearch.addEventListener('click', event => {
-   // trigger the event only if the 'button' tag
-   // is clicked to prevent potential event bubbling
-   if (event.target.tagName === "BUTTON") {
+// add functionality to the search input field
+// the search bar will produce live search results
+studentSearch.addEventListener('keyup', event => {
+   // trigger the event only if the 'input' tag
+   // is targeted to prevent potential event bubbling
+   if (event.target.tagName === "INPUT") {
       let filteredList = createFilteredList(studentNames, searchInput)
 
       // access the children to return a list
@@ -266,7 +254,6 @@ studentSearch.addEventListener('click', event => {
       // set tconditions for how the search results will
       // be displayed, if there are any to display
       if (filteredItems.length < 1) {
-         console.log("show no results");
          parentPage.children[1].style.display = "none";
          pagination.style.display = "none";
          showNoResults.style.display = "";
