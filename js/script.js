@@ -264,7 +264,6 @@ studentSearch.addEventListener('keyup', event => {
          appendPageLinks(filteredItems);
          pagination.style.display = "";
       }
-      searchInput.value = "";
    }
 });
 
