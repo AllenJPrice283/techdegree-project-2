@@ -155,12 +155,10 @@ const appendPageLinks = list => {
    pagination.appendChild(getPageLinks(list));
 };
 
-// for testing - delete after next save
-appendPageLinks(originalListItems);
 
-
-
-// The Student Search Section
+/********************************************
+ * Dynamically-Created Student Search Section
+ *******************************************/
 
 /**
  * Dynamically-created 'Student Search' Div
@@ -196,7 +194,7 @@ parentPage.appendChild(showNoResults);
 
 /**
  * Create a new list from the search results
- * @param {NodeListOf<HTMLHeadingElement} list Heading elements containing the Text Content of student names
+ * @param {NodeListOf<HTMLHeadingElement} list Heading elements that have access to the Text Content of student names
  * @param {HTMLInputElement} input Access the input value to match the names of students within the Heading elements
  * @returns {HTMLUListElement} The list of students that match the criteria of the search
  */
@@ -228,3 +226,37 @@ const createFilteredList = (list, input) => {
    
    return filteredList;
 };
+
+
+/**
+ * Heading elements that have access to the Text Content of student names
+ * @type {NodeListOf<HTMLHeadingElement>}
+ */
+const studentNames = originalList.querySelectorAll('h3');
+
+
+studentSearch.addEventListener('click', event => {
+   if (event.target.tagName === "BUTTON") {
+      let filteredList = createFilteredList(studentNames, searchInput)
+
+      // access the li to make it a list
+      let filteredItems = filteredList.children;
+      console.log(filteredList);
+
+      if (filteredItems.length < 1) {
+         console.log("show no results");
+         parentPage.children[1].style.display = "none";
+         pagination.style.display = "none";
+         showNoResults.style.display = "";
+      } else {
+         showNoResults.style.display = "none";
+         parentPage.children[1].style.display = "";
+         pagination.removeChild(pagination.firstElementChild);
+         appendPageLinks(filteredItems);
+         pagination.style.display = "";
+      }
+      searchInput.value = "";
+   }
+});
+
+appendPageLinks(originalListItems);
